@@ -27,7 +27,6 @@ jobs:
       - name: Run Job Scout
         env:
           EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
-          EMAIL_RECIPIENT: ${{ secrets.EMAIL_RECIPIENT }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
         run: python main.py
 
@@ -36,6 +35,6 @@ jobs:
         run: |
           git config user.name "job-scout-bot"
           git config user.email "bot@github.com"
-          git add seen_jobs.json
+          git add seen_jobs_*.json
           git diff --staged --quiet || git commit -m "chore: update seen jobs [skip ci]"
           git push

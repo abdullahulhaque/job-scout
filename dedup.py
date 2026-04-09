@@ -2,43 +2,36 @@ import json
 import pandas as pd
 from pathlib import Path
 
-SEEN_FILE = Path("seen_jobs.json")
-
-# cap how many URLs we store so the file doesn't grow forever (~30 days of runs)
 MAX_SEEN = 50_000
 
 
-def load_seen() -> set:
-    """Load previously seen job URLs from disk."""
-    if SEEN_FILE.exists():
-        with open(SEEN_FILE) as f:
+def _seen_file(profile: dict) -> Path:
+    """Each profile gets its own seen file so they don't interfere."""
+    name = profile["name"].lower().replace(" ", "_")
+    return Path(f"seen_jobs_{name}.json")
+
+
+def load_seen(profile: dict) -> set:
+    path = _seen_file(profile)
+    if path.exists():
+        with open(path) as f:
             return set(json.load(f))
     return set()
 
 
-def save_seen(seen: set):
-    """Persist seen URLs back to disk, capped at MAX_SEEN."""
+def save_seen(seen: set, profile: dict):
     seen_list = list(seen)
     if len(seen_list) > MAX_SEEN:
-        # keep the most recent entries (rough trim — order not guaranteed in a set)
         seen_list = seen_list[-MAX_SEEN:]
-    with open(SEEN_FILE, "w") as f:
+    with open(_seen_file(profile), "w") as f:
         json.dump(seen_list, f)
 
 
-def filter_new(jobs: pd.DataFrame) -> pd.DataFrame:
-    """
-    Return only jobs we haven't seen before.
-    Updates and saves the seen set as a side effect.
-    """
-    seen = load_seen()
-
-    # identify new jobs
+def filter_new(jobs: pd.DataFrame, profile: dict) -> pd.DataFrame:
+    """Return only jobs not seen before for this profile."""
+    seen = load_seen(profile)
     new_jobs = jobs[~jobs["job_url"].isin(seen)].reset_index(drop=True)
-
-    # add ALL current job URLs to seen (new + old), then save
     seen.update(jobs["job_url"].tolist())
-    save_seen(seen)
-
-    print(f"New jobs (not seen before): {len(new_jobs)}")
+    save_seen(seen, profile)
+    print(f"  [{profile['name']}] New jobs: {len(new_jobs)}")
     return new_jobs

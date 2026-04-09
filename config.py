@@ -1,18 +1,4 @@
-# ─── Search Settings ───────────────────────────────────────────────────────────
-
-# Terms sent to each job board
-SEARCH_TERMS = [
-    "software engineer",
-    "software developer",
-    "SDE",
-    "ML engineer",
-    "machine learning engineer",
-    "AI engineer",
-    "new grad software engineer",
-]
-
-# Locations to search
-LOCATIONS = ["United States", "Remote"]
+# ─── Global Settings ───────────────────────────────────────────────────────────
 
 # Job boards to hit
 JOB_SITES = ["linkedin", "indeed", "zip_recruiter", "glassdoor"]
@@ -23,45 +9,129 @@ HOURS_OLD = 2
 # Max results per search term per location per site
 RESULTS_PER_QUERY = 20
 
-# ─── Title Filters ─────────────────────────────────────────────────────────────
+# ─── Profiles ──────────────────────────────────────────────────────────────────
+# Each profile is an independent search with its own keywords, filters, and recipient.
+# Add as many profiles as you want.
 
-# Job title must contain at least one of these
-TITLE_INCLUDE = [
-    "software",
-    "sde",
-    "swe",
-    "engineer",
-    "developer",
-    "ml ",
-    "machine learning",
-    "ai engineer",
+PROFILES = [
+    {
+        "name": "Abdullah",
+        "recipient": "ulhaqueabdullah773@gmail.com",
+
+        "search_terms": [
+            "new grad software engineer",
+            "entry level software engineer",
+            "software engineer intern",
+            "SWE intern",
+            "SDE intern",
+            "software engineering internship",
+            "co-op software engineer",
+            "fall internship software engineer",
+            "spring internship software engineer",
+            "new graduate software developer",
+            "university grad software engineer",
+            "early career software engineer",
+            "new grad ML engineer",
+            "entry level machine learning engineer",
+            "new grad AI engineer",
+        ],
+
+        "locations": ["United States", "Remote"],
+
+        # title must contain at least one of these
+        "title_include": [
+            "software",
+            "sde",
+            "swe",
+            "engineer",
+            "developer",
+            "ml",
+            "machine learning",
+            "ai engineer",
+            "intern",
+            "co-op",
+            "coop",
+            "new grad",
+            "entry level",
+            "early career",
+            "university grad",
+            "college grad",
+        ],
+
+        # title must NOT contain any of these
+        "title_exclude": [
+            "senior",
+            "sr.",
+            "sr ",
+            "staff",
+            "principal",
+            "lead",
+            "manager",
+            "director",
+            "vp ",
+            "svp",
+            "head of",
+            "hardware",
+            "electrical",
+            "mechanical",
+            "civil",
+            "chemical",
+            "network engineer",
+            "embedded",
+            "sales intern",
+            "marketing intern",
+            "finance intern",
+            "hr intern",
+        ],
+    },
+
+    {
+        "name": "Imran",
+        "recipient": "ulhaque1@yahoo.com",
+
+        "search_terms": [
+            "director supply chain",
+            "senior director supply chain",
+            "VP supply chain",
+            "SVP supply chain",
+            "head of supply chain",
+            "director supply chain transformation",
+            "director business applications supply chain",
+            "director ERP supply chain",
+            "director supply chain technology",
+            "VP supply chain operations",
+            "director supply chain planning",
+            "director IT supply chain",
+        ],
+
+        "locations": ["United States", "Remote"],
+
+        # title must contain at least one of these
+        "title_include": [
+            "director",
+            "senior director",
+            "vp",
+            "svp",
+            "vice president",
+            "head of",
+            "chief supply chain",
+        ],
+
+        # title must NOT contain any of these
+        "title_exclude": [
+            "manager",
+            "analyst",
+            "associate",
+            "coordinator",
+            "specialist",
+            "intern",
+            "assistant",
+            "entry level",
+            "junior",
+            "clinical",
+            "sales director",
+            "marketing director",
+            "finance director",
+        ],
+    },
 ]
-
-# Job title must NOT contain any of these
-TITLE_EXCLUDE = [
-    "senior",
-    "sr.",
-    "sr ",
-    "staff",
-    "principal",
-    "lead",
-    "manager",
-    "director",
-    "vp ",
-    "head of",
-    "hardware",
-    "electrical",
-    "mechanical",
-    "civil",
-    "chemical",
-    "network engineer",
-    "devops",          # remove if you want devops roles
-    "embedded",
-]
-
-# ─── Email Config (set these as GitHub Secrets, not here) ──────────────────────
-# Secrets needed:
-#   EMAIL_SENDER       - your Gmail address
-#   EMAIL_RECIPIENT    - where to send the digest (can be same address)
-#   GMAIL_APP_PASSWORD - Gmail app password (not your regular password)
-#                        Generate at: myaccount.google.com/apppasswords

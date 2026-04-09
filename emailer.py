@@ -64,15 +64,17 @@ def send_email(jobs: pd.DataFrame, profile: dict):
     count     = len(jobs)
     timestamp = datetime.now().strftime("%b %d %I:%M %p")
 
+    recipients = recipient if isinstance(recipient, list) else [recipient]
+
     msg = MIMEMultipart("alternative")
     msg["Subject"] = f"Job Scout [{name}] — {count} new posting{'s' if count != 1 else ''} ({timestamp})"
     msg["From"]    = sender
-    msg["To"]      = recipient
+    msg["To"]      = ", ".join(recipients)
 
     msg.attach(MIMEText(_build_html(jobs, profile), "html"))
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
         server.login(sender, password)
-        server.sendmail(sender, recipient, msg.as_string())
+        server.sendmail(sender, recipients, msg.as_string())
 
-    print(f"  [{name}] Email sent to {recipient} with {count} jobs")
+    print(f"  [{name}] Email sent to {', '.join(recipients)} with {count} jobs")

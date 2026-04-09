@@ -87,7 +87,7 @@ PROFILES = [
 
     {
         "name": "Imran",
-        "recipient": "ulhaque1@yahoo.com",
+        "recipient": ["ulhaque1@yahoo.com", "ulhaqueabdullah773@gmail.com"],
 
         "search_terms": [
             "director supply chain",
